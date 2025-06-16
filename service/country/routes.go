@@ -2,7 +2,9 @@ package country
 
 import (
 	"fmt"
+	"net"
 	"net/http"
+	"net/netip"
 
 	"github.com/arianaw15/ip-sentinel/types"
 	"github.com/arianaw15/ip-sentinel/utils"
@@ -36,6 +38,22 @@ func (h *Handler) ValidateCountryByIP(w http.ResponseWriter, r *http.Request) {
 	if err := utils.Validate.Struct(payload); err != nil {
 		errors := err.(validator.ValidationErrors)
 		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid payload: %v", errors))
+		return
+	}
+
+	ipAddress, _, err := net.ParseCIDR(payload.IP)
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid CIDR format: %s", payload.IP))
+		return
+	}
+	ip, err := netip.ParseAddr(ipAddress.String())
+	if err != nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid IP address: %s", payload.IP))
+		return
+	}
+
+	if !ip.Is4() {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("IP address is not ipv4: %s", payload.IP))
 		return
 	}
 

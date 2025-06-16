@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+import "google/api/annotations.proto";
+
+
+service Country {
+    rpc ValidateCountryByIP(ValidateCountryRequest) returns (ValidateCountryResponse) {
+        option (google.api.http) = { get: "/api/v1/country/validate" };
+    }
+}
+
+message ValidateCountryRequest {
+    string ip = 1;
+    repeated string validCountries = 2;
+}
+
+message ValidateCountryResponse {
+    string ip = 1;
+    string countryName = 2;
+    bool isValid = 3;
+}

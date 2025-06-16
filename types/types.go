@@ -6,7 +6,7 @@ type IPStore interface {
 }
 
 type IPRequestPayload struct {
-	IP             string   `json:"ip" validate":"required,ip"`
+	IP             string   `json:"ip" validate":"required"`
 	ValidCountries []string `json:"validCountries" validate:"required"`
 }
 
