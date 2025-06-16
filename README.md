@@ -6,14 +6,14 @@
 
 The service leverages the **MaxMind GeoLite2** IP-to-country dataset to perform accurate and efficient geolocation checks.
 
-This project was developed as part of a technical assessment and showcases production-ready API development using Go.
+This project was developed as part of a technical assessment and showcases production-ready API development using Go. While it currently only accepts CIDR IPv4 addresses, it can easily be adapted to include other types.
 
 ---
 
 ## Features
 
 - Accepts a request containing:
-  - An IP address
+  - An CIDR IPv4 address
   - A list of country names (e.g. `"United States"`, `"Jordan"`, `"Peru"`)
 - Returns a boolean indicator of whether the IP belongs to one of the allowed countries
 - Uses the MaxMind GeoLite2 Country database
